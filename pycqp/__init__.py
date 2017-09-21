@@ -1,1 +1,1 @@
-# noqa
+from .cqp import CQPClient # noqa
