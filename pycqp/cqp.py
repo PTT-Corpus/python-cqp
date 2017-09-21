@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class CQPself:
+class CQPClient:
     """Wrap for `cqp` commandline utility.
 
     :param: corpus: name of the corpus
