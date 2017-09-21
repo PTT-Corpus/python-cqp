@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class CQPClient:
+class CQPself:
     """Wrap for `cqp` commandline utility.
 
     :param: corpus: name of the corpus
@@ -37,34 +37,32 @@ class CQPClient:
         except Exception as e:
             logger.warning(e)
 
-    @classmethod
     def make_conc(
-            cls, query, page_num=1, num_per_page=50, show_pos=False,
+            self, query, page_num=1, num_per_page=50, show_pos=False,
             begin_time=None, end_time=None, board_list=None, window_size=6):
         """Make concordance."""
-        client = cls()
         conclist = []
 
         last = num_per_page * page_num - 1
         first = last - num_per_page + 1
 
-        client.cqp.Exec('[word="%s"];' % query)
+        self.cqp.Exec('[word="%s"];' % query)
 
-        total = client.cqp.Exec("size Last;")
-        client.results = client.cqp.Dump(first=first, last=last)
-        if client.results == [['']]:
+        total = self.cqp.Exec("size Last;")
+        self.results = self.cqp.Dump(first=first, last=last)
+        if self.results == [['']]:
             return None
 
-        words = client.corpus.attribute(b"word", "p")
+        words = self.corpus.attribute(b"word", "p")
         if show_pos is True:
-            postags = client.corpus.attribute(b"pos", "p")
+            postags = self.corpus.attribute(b"pos", "p")
         elif show_pos is False:
             pass
         else:
             raise
-        boards = client.corpus.attribute(b"text_board", "s")
-        ptimes = client.corpus.attribute(b"text_time", "s")
-        for line in client.results:
+        boards = self.corpus.attribute(b"text_board", "s")
+        ptimes = self.corpus.attribute(b"text_time", "s")
+        for line in self.results:
             output = dict()
             start = int(line[0])
             end = int(line[1]) + 1
